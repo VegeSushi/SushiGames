@@ -1,0 +1,22 @@
+# Environment variables
+.env
+
+# Composer dependencies
+/vendor/
+
+# Composer lock file (uncomment if you want to ignore it)
+# composer.lock
+
+# IDE files
+/.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Docker volumes data (already handled by docker-compose, but for safety)
+/db_data/
+
+# PHP logs and cache
+*.log
+.phpunit.result.cache
