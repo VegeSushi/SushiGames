@@ -31,7 +31,7 @@ function getUniquePlatforms($pdo) {
 
 function getCoreForPlatform($platform) {
     $mapping = [
-        'ATARI2600' => 'atari2600',
+        'ATARI2600' => 'stella2014',
         'COMMODORE64' => 'vice_x64sc',
         'GAMEBOY' => 'gambatte',
         'NINTENDO64' => 'mupen64plus_next',
