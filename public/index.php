@@ -98,6 +98,11 @@ $router->get('/play', function() {
         return;
     }
 
+    if ($game['Platform'] === 'DOS') {
+        header('Location: /play-dos?rom=' . urlencode($romUrl));
+        exit;
+    }
+
     $core = getCoreForPlatform($game['Platform']);
     // Ensure the ROM URL is absolute for EmulatorJS if needed, or relative to the domain
     // Since ROMURL starts with /rom/ in database, it's already root-relative.
@@ -122,6 +127,71 @@ $router->get('/play', function() {
             EJS_gameUrl = "<?= htmlspecialchars($game['ROMURL']) ?>";
         </script>
         <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+    </body>
+    </html>
+    <?php
+});
+
+$router->get('/play-dos', function() {
+    $pdo = require __DIR__ . '/../src/database.php';
+    $romUrl = $_GET['rom'] ?? null;
+
+    if (!$romUrl) {
+        header('Location: /');
+        exit;
+    }
+
+    $game = getGameByRomUrl($pdo, $romUrl);
+    if (!$game) {
+        echo "Game not found.";
+        return;
+    }
+    ?>
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Playing <?= htmlspecialchars($game['Name']) ?></title>
+        <script src="https://js-dos.com/6.22/current/js-dos.js"></script>
+        <style>
+            html, body, canvas, .dosbox-container {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background: black;
+            }
+            .back-btn { 
+                position: absolute; 
+                top: 10px; 
+                left: 10px; 
+                z-index: 1000; 
+                background: rgba(0,0,0,0.5); 
+                padding: 5px 10px; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 4px;
+                font-family: sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="/" class="back-btn">&larr; Back to Sushi Games</a>
+        <canvas id="jsdos"></canvas>
+        <script>
+            Dos(document.getElementById("jsdos"), {
+                wdosboxUrl: "https://js-dos.com/6.22/current/wdosbox.js",
+                cycles: 1000,
+                autolock: false,
+            }).ready(function (fs, main) {
+                fs.extract("<?= htmlspecialchars($game['ROMURL']) ?>").then(function () {
+                    main(["-c", "AUTOEXEC.BAT"]).then(function (ci) {
+                        window.ci = ci;
+                    });
+                });
+            });
+        </script>
     </body>
     </html>
     <?php
