@@ -76,7 +76,7 @@ $router->get('/', function() {
         </div>
 
         <footer>
-            <p>Powered by <a href="https://github.com/emulatorjs/EmulatorJS" target="_blank">EmulatorJS</a></p>
+            <p>Powered by <a href="https://github.com/emulatorjs/EmulatorJS" target="_blank">EmulatorJS</a> and <a href="https://js-dos.com/" target="_blank">jsdos</a></p>
         </footer>
     </body>
     </html>
