@@ -34,8 +34,17 @@ function getCoreForPlatform($platform) {
         'ATARI2600' => 'stella2014',
         'COMMODORE64' => 'vice_x64sc',
         'GAMEBOY' => 'gambatte',
+        'GBC' => 'gambatte',
+        'GBA' => 'mgba',
         'NINTENDO64' => 'mupen64plus_next',
+        'NES' => 'fceumm',
+        'SNES' => 'snes9x',
+        'MASTER_SYSTEM' => 'genesis_plus_gx',
+        'VIRTUALBOY' => 'beetle_vb',
     ];
-    return $mapping[$platform] ?? 'mednafen_gba';
+    if (!isset($mapping[$platform])) {
+        throw new Exception("Platform not supported.");
+    }
+    return $mapping[$platform];
 }
 

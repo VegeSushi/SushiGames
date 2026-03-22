@@ -103,7 +103,12 @@ $router->get('/play', function() {
         exit;
     }
 
-    $core = getCoreForPlatform($game['Platform']);
+    try {
+        $core = getCoreForPlatform($game['Platform']);
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return;
+    }
     // Ensure the ROM URL is absolute for EmulatorJS if needed, or relative to the domain
     // Since ROMURL starts with /rom/ in database, it's already root-relative.
     ?>
